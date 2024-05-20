@@ -45,7 +45,7 @@ export default NuxtAuthHandler({
 
   session: {
     strategy: "jwt",
-    maxAge: 3600, // 1 hour
+    maxAge: 3600, // 1 hour session only, after will need to reauthenicate
   },
 
  callbacks: {
