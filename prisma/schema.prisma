@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique @db.VarChar(255)
+  email         String    @db.VarChar(255)
+  password      String    @db.VarChar(255)
+  role          Role      @default(GENERAL)
+  status        Status    @default(ACTIVE)
+  last_login    DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+}
+
+
+enum Role {
+  ADMIN
+  GENERAL
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+model article {
+  article_id    Int                 @id @default(autoincrement())
+  title         String
+  author        String
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  published     Boolean             @default(false)
+  components    articleComponent[]
+}
+
+model articleComponent {
+  component_id    Int             @id @default(autoincrement())
+  article         article         @relation(fields: [articleId], references: [article_id], onDelete: Cascade)
+  articleId       Int
+  componentType   String
+  order           Int               
+  paragraphs      String?          @db.Text
+  image           image?          
+}
+
+model image {
+  image_id        Int               @id @default(autoincrement())
+  component       articleComponent  @relation(fields: [component_id], references: [component_id], onDelete: Cascade)
+  component_id    Int               @unique
+  imageInBinary   String            @db.MediumText
+}
