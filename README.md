@@ -85,9 +85,4 @@ Before initializing the database with Prisma, you need to set up and host a MySQ
 This will initialize your database with the defined schema and create the necessary tables.
 
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
-"# Limousine-Transport-demo"  
-"# myrepo" 
-=======
-# Limousine-Transport-demo
->>>>>>> b99a6a8d568c3a98871ab852312f4b9ee0560095
+
