@@ -12,9 +12,11 @@ export default defineNuxtConfig({
     },
   ],
   modules: [
+    'nuxt-icon',
     '@sidebase/nuxt-auth',
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt'
+    '@pinia-plugin-persistedstate/nuxt',
+    "@nuxtjs/google-fonts"
   ],
 
   auth: {
@@ -24,6 +26,4 @@ export default defineNuxtConfig({
       type: 'authjs',
     },    
   },
-
-
 })
