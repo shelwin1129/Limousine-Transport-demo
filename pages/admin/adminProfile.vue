@@ -158,4 +158,5 @@
   td:nth-child(7) button:nth-child(2) {
     color: #cc181e;
   }
+  
 </style>
