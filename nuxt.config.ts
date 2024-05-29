@@ -5,12 +5,14 @@ export default defineNuxtConfig({
   runtimeConfig: {
     authSecret: process.env.AUTH_SECRET_KEY,
   },
+
   components: [
     {
       path: '~/components', // will get any nested components in components too
       pathPrefix: false,
     },
   ],
+  
   modules: [
     'nuxt-icon',
     '@sidebase/nuxt-auth',
