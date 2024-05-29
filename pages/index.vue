@@ -103,7 +103,7 @@ const news = ref([
   .booking-selection-box {
     position: absolute;
     top: 50%;
-    left: 20%;
+    left: 18%;
     transform: translate(-50%, -50%);
     width: 300px;
     padding: 25px 45px;
@@ -152,11 +152,11 @@ const news = ref([
     margin-bottom: 20px;
     background-color: #cc181e;
     font-size: 17px;
+    transition: ease-in-out 0.2s;
   }
 
   .book-btn:hover {
-    background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
-    transition: ease-in-out 1s;
+    background-color:#990000;
   }
 
   .quote-btn {

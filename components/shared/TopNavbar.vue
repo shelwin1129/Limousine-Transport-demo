@@ -44,14 +44,14 @@
         <span class="menu-text">Article ▾</span>
       </NuxtLink>
       <span class="dividing-line"></span>
-      <NuxtLink to="/" class="menu-button" >
+      <NuxtLink to="/contact" class="menu-button" >
         <span class="menu-text">Contact</span>
       </NuxtLink>
       <span class="dividing-line"></span>
       <NuxtLink to="/" class="menu-button" >
         <span class="menu-text">Customer Login</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button">
+      <NuxtLink to="/" class="menu-button" title="Book now">
         <span class="menu-text">Book Now</span>
       </NuxtLink>
     </div>
@@ -70,7 +70,7 @@
 
   .topNavbar .logo {
     display: block;
-    padding: 12px;
+    padding: 10px 0;
     color: black;
     font-size: 28px;
     font-weight: bold;

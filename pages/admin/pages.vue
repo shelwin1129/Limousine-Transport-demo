@@ -34,11 +34,11 @@
           </td>
           <td> {{ page.published ? 'Published' : 'Draft' }}</td>
           <td>
-            <div>
-              <button v-if="!page.published" @click="navigate(page)"><span class="material-symbols-outlined" title="Publish page">publish</span></button>
+            <div class="buttons-div">
+              <button v-if="!page.published" @click="navigate(page)"><Icon name="material-symbols:publish" class="Icon" title="Publish page"/></button>
               <span v-else class="placeholder"></span>
-              <button @click="editPage(page.article_id)"><span class="material-symbols-outlined" style="color: #EECA40" title="Edit page">edit</span></button>
-              <button @click="openDeleteDialog(page.article_id)"><span class="material-symbols-outlined" style="color: red" title="Delete page">delete</span></button>
+              <button @click="editPage(page.article_id)"><Icon name="tabler:edit" class="Icon" title="Edit page"/></button>
+              <button @click="openDeleteDialog(page.article_id)"><Icon name="material-symbols:delete-outline" class="Icon" title="Delete page"/></button>
             </div>
           </td>
         </tr>
@@ -171,7 +171,19 @@
     cursor: pointer;
   }
 
-  .material-symbols-outlined {
-    color: #2B99F3;
+  .Icon {
+    font-size: 24px;
+  }
+
+  .buttons-div button:nth-child(1) {
+    color: #57A8FF;
+  }
+
+  .buttons-div button:nth-child(2) {
+    color: #EECA40;
+  }
+
+  .buttons-div button:nth-child(3) {
+    color: #cc181e;
   }
 </style>

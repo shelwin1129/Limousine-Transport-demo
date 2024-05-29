@@ -1,12 +1,8 @@
 <template>
-  <head>
-      <!-- For icon purposes  -->
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-  </head>
     <aside :class=" { expanded: isExpand}">
       <div v-if="isExpand" class="nav-header">
         <h4 @click="" class="logo">Limousine Transport</h4>
-        <span @click="toggleExpand" class="wrap-sidebar"><span class="material-symbols-outlined">chevron_left</span></span>
+        <span @click="toggleExpand" class="wrap-sidebar"><Icon name="material-symbols:chevron-left-rounded" /></span>
       </div>
       <hr v-if="isExpand">
       <div v-if="!isExpand" class= "toggle-button">
@@ -14,19 +10,19 @@
       </div>
       <div class="menu">
         <NuxtLink to="/admin/dashboard" :class="{ 'menu-button': menuStore.activeMenu !== 'dashboard', 'active': menuStore.activeMenu === 'dashboard' }" @click="menuStore.setActiveMenu('dashboard')" title="Dashboard" >
-          <span class="material-symbols-outlined nav-icon">home</span>
+          <Icon name='material-symbols:house-rounded' class="nav-icon"/>
           <span v-if="isExpand" class="menu-text">Dashboard</span>
         </NuxtLink>
         <NuxtLink to="/admin/pages" :class="{ 'menu-button': menuStore.activeMenu !== 'Pages', 'active': menuStore.activeMenu === 'Pages' }" @click="menuStore.setActiveMenu('Pages')" title="Pages">
-          <span class="material-symbols-outlined">article</span>
+          <Icon name='material-symbols:article-outline' class="nav-icon"/>
           <span v-if="isExpand" class="menu-text">Pages</span>
         </NuxtLink>
         <NuxtLink to="/admin/adminProfile" :class="{ 'menu-button': menuStore.activeMenu !== 'adminProfile', 'active': menuStore.activeMenu === 'adminProfile' }" @click="menuStore.setActiveMenu('adminProfile')" title="Admin Profile">
-          <span class="material-symbols-outlined">admin_panel_settings</span>
+          <Icon name='material-symbols:admin-panel-settings-outline' class="nav-icon"/>
           <span v-if="isExpand" class="menu-text">Admin Profile</span>
         </NuxtLink>
         <NuxtLink @click="handleLogout" class="menu-button" title="Log out">
-          <span class="material-symbols-outlined">power_settings_new</span>
+          <Icon name='material-symbols:power-settings-new' class="nav-icon"/>
           <span v-if="isExpand" class="menu-text">Log out</span>
         </NuxtLink>
       </div>
@@ -88,8 +84,6 @@
     }
   }
 
-
-
   .nav-header {
     display: flex;
     justify-content: space-between;
@@ -107,6 +101,10 @@
     white-space: nowrap;
     cursor: pointer;
   }
+
+  .nav-icon {
+    font-size: 24px;
+  }
   
   .toggle-button {
     margin-bottom: 20px;
@@ -118,7 +116,7 @@
 
   .wrap-sidebar {
     color: white;
-    font-size: 32px;
+    font-size: 24px;
     opacity: 0.7;
     cursor: pointer; 
   }

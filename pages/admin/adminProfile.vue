@@ -33,9 +33,9 @@
         </td>
         <td>{{ formatDate(admin.last_login) }}</td>
         <td>
-          <div>
-            <button @click="editPage(admin.id)"><span class="material-symbols-outlined" style="color: #EECA40" title="Edit page">edit</span></button>
-            <button @click="openDeleteDialog(admin.id)"><span class="material-symbols-outlined" style="color: red" title="Delete page">delete</span></button>
+          <div class=buttons-div>
+            <button @click="editPage(admin.id)"><Icon name="tabler:edit" class="Icon" title="Edit Admin"/></button>
+            <button @click="openDeleteDialog(admin.id)"><Icon name="material-symbols:delete-outline" class="Icon" title="Delete admin"/></button>
           </div>
         </td>
       </tr>
@@ -145,5 +145,17 @@
     background-color: rgba(255, 77, 77, 0.2); /* Light red background */
     color: #FF4D4D; /* Solid red text */
     text-align: center;
-}
+  }
+
+  .Icon {
+    font-size: 24px;
+  }
+
+  td:nth-child(7) button:nth-child(1) {
+    color: #EECA40;
+  }
+
+  td:nth-child(7) button:nth-child(2) {
+    color: #cc181e;
+  }
 </style>

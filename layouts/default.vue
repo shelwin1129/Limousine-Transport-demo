@@ -1,5 +1,6 @@
 <template>
   <div v-if="isMounted">
+    <HotlineBar/>
     <TopNavbar/>
     <div class="slot">
       <slot></slot>
