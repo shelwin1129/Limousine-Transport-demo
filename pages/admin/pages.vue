@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-if="pages" v-for="page in pages"  :key="page.article_id">
+        <tr v-if="pages" v-for="page in pages" :key="page.article_id">
           <td class="title" @click="navigate(page)">{{ page.title }}</td>
           <td v-if="page.author">{{ page.author }}</td>
           <td v-else>Unknown Author</td>
@@ -28,7 +28,6 @@
             Last Modified on <br>
             {{ formatDate(page.updatedAt) }}
           </td>
-
           <td v-else>
             Published on<br> 
             {{ formatDate(page.createdAt) }}
@@ -48,36 +47,42 @@
         </tr>
       </tbody>
     </table>
-  <DeleteDialog v-if="isDialogOpen" v-bind:pageID="pageIDToDelete" @updated="isDialogOpen.value = false" @deleted="refreshPage"/>
+  <DeleteDialog ref="deleteDialogRef" @delete="deletePage()"/>
 </template>
 
 <script setup>
   definePageMeta({
-    layout: 'admin',
+    layout: 'admin-layout',
   })
 
-  const { data: pages, refresh} = await useFetch('/api/fetchArticles')
-
-  const route = useRoute();
-  const router = useRouter();
-  
+  const deleteDialogRef = ref(null);
   const pageIDToDelete = ref(null);
-  const isDialogOpen = ref(false);
 
   const openDeleteDialog = (pageID) => {
     pageIDToDelete.value = pageID;
-    isDialogOpen.value = true;
+    deleteDialogRef.value.openDialog();
   };
 
-  const refreshPage = async () => {
-    await refresh();
-  }
+  const { data: pages, refresh} = await useFetch('/api/fetchArticles')
+
+  const router = useRouter();
+  const navigate = (page) => router.push(`/admin/articles/${page.article_id}`)
 
   const editPage = (id) => {
-    router.push(`article/edit/${id}`)
+    router.push(`articles/edit/${id}`)
   }
 
-  const navigate = (page) => router.push(`/article/${page.article_id}`)  //Navigate to the article accordingly
+  const deletePage = async () => {
+    const res = await useFetch(`/api/post/${pageIDToDelete.value}`, {
+      method: "DELETE",
+    })
+    if (!res.data) {
+      throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
+    } else {
+      await refresh();
+      useToastListStore().addToast('Admin account successfully deleted.', 'success')
+    }
+  }
 </script>
 
 <style scoped>
@@ -140,6 +145,10 @@
 
   td:nth-child(4) {
     line-height: 1.5;
+  }
+
+  td:nth-last-child(1) {
+    width: 150px;
   }
 
   td:nth-last-child(1) div {

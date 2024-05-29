@@ -24,7 +24,7 @@
   
 <script setup>
   const route = useRoute();
-  const { data: article, error, pending } = await useFetch(`/api/post/${route.params.id}`)
+  const { data: article } = await useFetch(`/api/post/${route.params.id}`)
 
   //sort the components by the order attribute
   const sortedComponents = computed(() => {
@@ -35,10 +35,10 @@
     return text.replace(/\n/g, '<br>');
   };
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' }
-    return new Date(dateString).toLocaleDateString('en-MY', options)
-  }
+  // const formatDate = (dateString) => {
+  //   const options = { year: 'numeric', month: 'long', day: 'numeric' }
+  //   return new Date(dateString).toLocaleDateString('en-MY', options)
+  // }
   
   const isOdd = (num) => num % 2 !== 0
 </script>

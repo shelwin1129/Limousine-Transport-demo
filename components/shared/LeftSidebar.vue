@@ -13,15 +13,15 @@
         <span @click="toggleExpand">&#8801;</span>
       </div>
       <div class="menu">
-        <NuxtLink to="/admin/dashboard" :class="{ 'menu-button': activeMenu !== 'dashboard', 'active': activeMenu === 'dashboard' }" @click="setActiveMenu('dashboard')" title="Dashboard" >
+        <NuxtLink to="/admin/dashboard" :class="{ 'menu-button': menuStore.activeMenu !== 'dashboard', 'active': menuStore.activeMenu === 'dashboard' }" @click="menuStore.setActiveMenu('dashboard')" title="Dashboard" >
           <span class="material-symbols-outlined nav-icon">home</span>
           <span v-if="isExpand" class="menu-text">Dashboard</span>
         </NuxtLink>
-        <NuxtLink to="/admin/pages" :class="{ 'menu-button': activeMenu !== 'Pages', 'active': activeMenu === 'Pages' }" @click="setActiveMenu('Pages')" title="Pages">
+        <NuxtLink to="/admin/pages" :class="{ 'menu-button': menuStore.activeMenu !== 'Pages', 'active': menuStore.activeMenu === 'Pages' }" @click="menuStore.setActiveMenu('Pages')" title="Pages">
           <span class="material-symbols-outlined">article</span>
           <span v-if="isExpand" class="menu-text">Pages</span>
         </NuxtLink>
-        <NuxtLink to="/admin/adminProfile" :class="{ 'menu-button': activeMenu !== 'adminProfile', 'active': activeMenu === 'adminProfile' }" @click="setActiveMenu('adminProfile')" title="Admin Profile">
+        <NuxtLink to="/admin/adminProfile" :class="{ 'menu-button': menuStore.activeMenu !== 'adminProfile', 'active': menuStore.activeMenu === 'adminProfile' }" @click="menuStore.setActiveMenu('adminProfile')" title="Admin Profile">
           <span class="material-symbols-outlined">admin_panel_settings</span>
           <span v-if="isExpand" class="menu-text">Admin Profile</span>
         </NuxtLink>
@@ -34,19 +34,14 @@
 </template>
 
 <script setup>
-  // const isExpand = ref(true);
-  const isExpand = ref(window.innerWidth >= 1400);
-
-  const activeMenu = ref('dashboard');
+  const menuStore = useMenuStore();
 
   const toggleExpand = () => {
     isExpand.value = !isExpand.value;
   }
 
-  const setActiveMenu = (menu) => {
-    activeMenu.value = menu;
-  };
-
+  const isExpand = ref(window.innerWidth >= 1400);
+  
   onMounted(() => {
     const handleResize = () => {
       isExpand.value = window.innerWidth >= 1400;

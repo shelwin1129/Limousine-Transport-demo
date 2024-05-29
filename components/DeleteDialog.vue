@@ -1,48 +1,41 @@
 <template>
-  <div class="modal-overlay" @click="closeDialog">
+  <div v-if="isDialogOpen" class="modal-overlay" @click="closeDialog">
     <div class="modal" @click.stop>
       <div class="modal-header">
-        <h2>Delete Page?</h2>
-        <button class="close-button" @click="closeDialog"><span class="material-symbols-outlined">close</span></button>
+        <h2>Permenant Deletion</h2>
+        <button class="close-button" @click="closeDialog">✖</button>
       </div>
-      <p>Are you sure you want to permenantly delete this page?</p>
+      <p>This action is irrevisible and cannot be undone.</p>
       <div class="modal-footer">
         <button @click="closeDialog">Cancel</button>
-        <button @click="deletePage(pageID)">Delete</button>
+        <button @click="confirmDeletion">Ok</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-  const { pageID } = defineProps({
-    pageID: {
-      type: Number,
-    }
-  })
+  const emit = defineEmits('delete');
 
-  const emit = defineEmits(['updated', 'deleted']);
+  const isDialogOpen = ref(false);
 
-  const closeDialog = () => {
-    emit('updated');
+  const openDialog = () => {
+    isDialogOpen.value = true;
   };
 
-  const deletePage = async (pageID) => {
-    const res = await useFetch(`/api/post/${pageID}`, {
-      method: "DELETE",
-    })
+  defineExpose({ openDialog });
 
-    if (!res.data) {
-      throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
-    } else {
-      emit('deleted'); //refresh page after deleting   
-      closeDialog();
-    }
-  }
+  const closeDialog = () => {
+    isDialogOpen.value = false;
+  };
 
+  const confirmDeletion = () => {
+    emit('delete'); 
+    closeDialog();
+  };
 </script>
 
-<style>
+<style scoped>
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -51,26 +44,32 @@
     right: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
   }
 
   .modal {
-    width: 450px;
-    height: 250px;
+    width: 420px;
     margin-top: 3%;
-    padding: 25px 40px;
-    border-radius: 25px;
+    padding: 15px 25px;
+    border-radius: 5px;
     background-color: white;
   }
 
   .modal-header {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   .close-button {
     margin-left: auto;
+    font-size: 16px;
+    opacity: 0.6;
+  }
+
+  .close-button:hover {
+    opacity: 1;
   }
 
   .modal-footer {
@@ -79,33 +78,43 @@
   }
 
   .modal-footer button {
-    width: 100px;
-    height: 40px;
-    color: white;
+    height: 30px;
+    margin-top: 15px;
+    padding: 0 20px;
+    border-radius: 5px;
     font-size: 14px;
-    font-weight: 500;
-    border-radius: 16px;
-    margin-top: 50px;
-    background-color: #f44336;
+    transition: ease-in-out 0.2s;
   }
 
   .modal-footer button:nth-child(1) {
-    background-color: #2B99F3;
+    border: 1px solid #e8e8eb;
+    color: #747475;
+  }
+
+  .modal-footer button:nth-child(1):hover {
+    border: 1px solid #e8e8eb;
+    background-color: #ECF5FF;
+    color: #66B1FF;
   }
 
   .modal-footer button:nth-child(2) {
     margin-left: 10px;
-    background-color: #f44336;
+    background-color: #66B1FF;
+    color: white;
+  }
+
+  .modal-footer button:nth-child(2):hover {
+    background-color: #3d95f3;
   }
 
   h2 {
     font-weight: bold;
-    font-size: 24px;
+    font-size: 18px;
   }
 
   p {
-    width: 90%;
-    font-size: 16px;
+    font-size: 14px;
+    text-align: justify;
     line-height: 1.5;
   }
 </style>

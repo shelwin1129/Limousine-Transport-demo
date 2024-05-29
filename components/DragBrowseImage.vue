@@ -41,7 +41,6 @@
         });
     };
 
-
     //open the file selection dialog
     const selectFile = () => {
         fileInput.value.click();

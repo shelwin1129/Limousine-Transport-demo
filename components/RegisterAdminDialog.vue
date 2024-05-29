@@ -1,21 +1,21 @@
 <template>
-  <div v-if="isDialogOpen" class="dialog-container">
-    <div class="dialog">
+  <div v-if="isDialogOpen" @click="closeDialog" class="dialog-container">
+    <div class="dialog" @click.stop>
       <div class="dialog-head">
         <h3>Add Admin Data</h3>
         <button class="close-btn" @click="closeDialog">✖</button>
       </div>
       <div>
         <label for="username">Username:</label><br>
-        <input type="text" id="username" v-model="form.username" placeholder="Username" required>
+        <input type="text" id="username" v-model="form.username" placeholder="Username" autocomplete="off" required>
       </div>
       <div>
         <label for="password">Password:</label><br>
-        <input type="password" id="password" v-model="form.password" placeholder="Password" required>
+        <input type="password" id="password" v-model="form.password" placeholder="Password" autocomplete="new-password" required>
       </div>
       <div>
         <label for="confirmPassword">Confirm Password:</label><br>
-        <input type="password" id="confirmPwd" v-model="form.confirmPwd" placeholder="Confirm password" required>
+        <input type="password" id="confirmPwd" v-model="form.confirmPwd" placeholder="Confirm password" autocomplete="off" required>
       </div>
       <div>
         <label for="status">Status:</label><br>
@@ -34,7 +34,7 @@
       </div>
       <div>
         <label for="email">Office Email:</label><br>
-        <input type="email" id="email" v-model="form.email" placeholder="Office email" required>
+        <input type="email" id="email" v-model="form.email" placeholder="Office email" autocomplete='off' required>
       </div>
       <div class="dialog-footer">
         <button class="close-button" @click="closeDialog">Close</button>
@@ -46,11 +46,11 @@
 
 <script setup>
   const form = ref({
-    username: '',
-    password: '',
-    confirmPwd: '',
+    username: 'James',
+    password: '123',
+    confirmPwd: '123',
     status: 'ACTIVE',
-    email: '',
+    email: 'testing@gmail.com',
     role: 'ADMIN',
   });
 
@@ -64,20 +64,50 @@
   defineExpose({ openDialog });
 
   const closeDialog = () => {
+    form.value = {
+      username: 'James',
+      password: '123',
+      confirmPwd: '123',
+      status: 'ACTIVE',
+      email: 'testing@gmail.com',
+      role: 'ADMIN',
+    };
     isDialogOpen.value = false;
   };
 
   const register = async () => {
+    if(!form.value.username || !form.value.password || !form.value.confirmPwd || !form.value.email) {
+      useToastListStore().addToast('Please complete the form.', 'message');
+      return;
+    }
+    if (!doPasswordsMatch(form.value.password, form.value.confirmPwd)) {
+      useToastListStore().addToast('The passwords did not match.', 'message');
+      return;
+    }
+    if (!isValidEmail(form.value.email)) {
+      useToastListStore().addToast('The email format is not valid.', 'message');
+      return;
+    }
+
     try {
-      await useFetch('/api/auth/register', {
+      const { error } = await useFetch('/api/auth/register', {
         method: 'POST',
-        body: form.value
+        body: JSON.stringify(form.value)
       });
-      emit('updated');
+
+      if (error.value) {
+        useToastListStore().addToast('Username already exists. Please try use another one.', 'error');
+      } 
+      else {
+        emit('updated');
+        useToastListStore().addToast('New admin is successfully registered.', 'success');
+        closeDialog();
+        return;
+      }
     } catch (e) {
       console.log('Error during registration:', e);
+      useToastListStore().addToast('Registration failed. Please try again.', 'error');
     }
-    closeDialog();
   }
 </script>
 
@@ -111,15 +141,15 @@
   }
 
   .close-btn {
-  color: black;
-  font-size: 18px;
-  opacity: 0.6;
-  padding:0;
+    color: black;
+    font-size: 18px;
+    opacity: 0.6;
+    padding:0;
   }
 
   .close-btn:hover {
-  opacity: 1;
-  transition: linear 0.3s;
+    opacity: 1;
+    transition: linear 0.3s;
   }
 
   label {

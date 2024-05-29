@@ -1,5 +1,6 @@
 <template>
-  <div class="background">
+  <div v-if="isMounted" class="background">
+    <ToastList/>
     <div class="container">
       <div class='logo'>
         <span>Limousine Transport</span>
@@ -13,8 +14,8 @@
         <label>Password</label><br>
         <input type="password" v-model="loginForm.password" placeholder="Enter password" required /><br>
 
-        <button @click.prevent="handlelogin()" class="login-button">LOG IN</button>
-        <button @click.prevent="toHomeSite()" class="returnHome-button">Return to Home Page Site</button>
+        <button @click.prevent="handlelogin" class="login-button">Log In</button>
+        <button @click.prevent="toHomeSite" class="returnHome-button">Return to Home Page Site</button>
       </div>
     </div>
   </div>
@@ -29,6 +30,11 @@
     }
   })
 
+  const isMounted = ref(false);
+  onMounted(() => {
+    isMounted.value = true;
+  });
+
   const router = useRouter();
   const toHomeSite = () => {
     router.push('/');
@@ -41,16 +47,15 @@
 
   const { signIn } = useAuth();
   const handlelogin = async () => {
-    try {
-      let res = await signIn('credentials', { username: loginForm.value.username, password: loginForm.value.password })
-      // return res;
-    } catch(e) {
-      console.log(e);
-    }
+      let res = await signIn('credentials', { username: loginForm.value.username, password: loginForm.value.password, redirect: false })
+      if (res.error) {
+        useToastListStore().addToast('Invalid credentials or do not gain access to the administrator back-end', 'error'); 
+      }
+      else {
+        useToastListStore().addToast('You have logged in successfully', 'success');
+        router.push('/admin/dashboard');
+      }
   }
-
-
-
 </script>
 
 <style scoped>

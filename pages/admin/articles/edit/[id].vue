@@ -85,6 +85,9 @@
 
 
 <script setup>
+    definePageMeta({
+        layout: 'admin-layout',
+    })
     const route = useRoute();
     const router = useRouter();
     const { data: article, error, pending } = await useFetch(`/api/post/${route.params.id}`)

@@ -8,11 +8,31 @@ export default defineEventHandler(async (event) =>  {
     const {username, password, confirmPwd, role, status, email} = register_data;
 
     if(!username || !password || !confirmPwd || !status || !email ) {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Bad Request",
-            message: "Missing required fields", 
-        })
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Bad Request",
+        message: "Missing required fields",
+      })
+    }
+
+    const existingUser = await prisma.users.findUnique({
+      where: { username }
+    })
+
+    if(existingUser) {
+      throw createError({
+        statusCode: 409,
+        statusMessage: "Conflict",
+        message: "Username already exists",
+      });
+    }
+
+    if (password !== confirmPwd) {
+      throw createError({
+        statusCode: 420,
+        statusMessage: "Bad Request",
+        message: "Passwords do not match",
+      });
     }
 
     const salt = await bcrypt.genSalt(10)
@@ -27,7 +47,6 @@ export default defineEventHandler(async (event) =>  {
           status,
         },
       });
-
   
     return {user, password: undefined};
 })

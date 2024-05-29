@@ -7,11 +7,15 @@ export default defineNuxtConfig({
   },
   components: [
     {
-      path: '~/components', // will get any components nested in let's say /components too
+      path: '~/components', // will get any nested components in components too
       pathPrefix: false,
     },
   ],
-  modules: ["@sidebase/nuxt-auth"],
+  modules: [
+    '@sidebase/nuxt-auth',
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt'
+  ],
 
   auth: {
     globalAppMiddleware: true,  //enables the authentication middleware globally across the application.
@@ -20,4 +24,6 @@ export default defineNuxtConfig({
       type: 'authjs',
     },    
   },
+
+
 })

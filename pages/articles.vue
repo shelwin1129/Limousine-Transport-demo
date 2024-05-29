@@ -14,7 +14,11 @@
 </template>
 
 <script setup>
-  const { data: publishedArticles, error, pending } = await useFetch('/api/publishedArticles');
+definePageMeta({
+  layouts: 'default',
+  auth: false,
+})
+  const { data: publishedArticles, error, pending } = await useFetch('/api/fetchPublishedArticles');
 </script>
 
 <style>

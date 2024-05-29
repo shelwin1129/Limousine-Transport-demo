@@ -53,33 +53,17 @@
 
 <script setup>
     definePageMeta({
-        layout: 'admin',
+        layout: 'admin-layout',
     });
     
     const components = ref([]); //An reactive array that stores components added and can changes can be reflected on the table
     const ArticleData = reactive({
-        title: 'asdasadsdas',
-        author: 'asddasdsasda',
-        published: false,
+        title: '',
+        author: '',
+        published: null,
         components: components, // This will store the data for text paragraphs and images
     })
     
-    //convert to base64 string b4 saving it into database
-    const convertToBLOB = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onload = () => {
-                resolve(reader.result);
-            };
-            reader.onerror = (error) => {
-                reject(error);
-            };
-
-            reader.readAsDataURL(file);
-        });
-    };
-
     const saveArticle = async (published) => {
         ArticleData.published = published;
         // Resolve all promises in the components array
@@ -110,6 +94,11 @@
         if (!res.data) {
             throw createError({ statusCode: 400, statusMessage: 'Oops, something went wrong' });
         }
+
+        if(ArticleData.published) 
+            useToastListStore().addToast('An new article is published', 'success')
+         else 
+            useToastListStore().addToast('An article draft is added', 'success')
         
         const router = useRouter();
         router.push('/admin/pages')

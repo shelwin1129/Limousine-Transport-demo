@@ -1,46 +1,57 @@
 <template>
   <div class="topNavbar">
-    <div class="logo">
+    <NuxtLink to="/" class="logo">
       Limousine Transport
-    </div>
+    </NuxtLink>
     <div class="menu">
       <NuxtLink to="/" class="menu-button">
         <span class="menu-text">Home</span>
       </NuxtLink>
+      <span class="dividing-line"></span>
       <NuxtLink to="/" class="menu-button">
         <span class="menu-text">Singapore </span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="/" class="menu-button">
         <span class="menu-text">Singapore ▾</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="/" class="menu-button">
         <span class="menu-text">Singapore to Malaysia ▾</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="/" class="menu-button">
         <span class="menu-text">Malaysia</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="/" class="menu-button">
         <span class="menu-text">Events</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="/" class="menu-button">
         <span class="menu-text">FAQs</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="/" class="menu-button">
         <span class="menu-text">Careers ▾</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="https://www.agoda.com/search?pcs=1&cid=1740416&hl=en&city=4064&checkIn=2024-05-25&checkOut=2024-05-26&adults=1&rooms=1&pslc=1" target="_blank" class="menu-button" title="">
         <span class="menu-text">Hotels</span>
       </NuxtLink>
-      <NuxtLink to="/articles" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="/articles" class="menu-button">
         <span class="menu-text">Article ▾</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="/" class="menu-button" >
         <span class="menu-text">Contact</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <span class="dividing-line"></span>
+      <NuxtLink to="/" class="menu-button" >
         <span class="menu-text">Customer Login</span>
       </NuxtLink>
-      <NuxtLink to="/" class="menu-button" title="">
+      <NuxtLink to="/" class="menu-button">
         <span class="menu-text">Book Now</span>
       </NuxtLink>
     </div>
@@ -58,10 +69,22 @@
   }
 
   .topNavbar .logo {
+    display: block;
     padding: 12px;
+    color: black;
     font-size: 28px;
     font-weight: bold;
     font-family:'Times New Roman', Times, serif;
+    text-decoration: none;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .topNavbar .dividing-line {
+    width: 1px;
+    height: 1rem;
+    margin: auto 0;
+    background-color: #C8C7C7;
   }
 
   .topNavbar .menu {
@@ -69,8 +92,8 @@
     justify-content: space-evenly;
     padding: 6px 0;
     margin-bottom: 12px;
-    border-top: 1px dashed grey;
-    border-bottom: 1px dashed grey;
+    border-top: 1px dotted #C8C7C7;
+    border-bottom: 1px dotted #C8C7C7;
   }
 
   .topNavbar .menu a {
@@ -82,6 +105,11 @@
 
   .menu-button {
     padding: 8px 8px;
+  }
+
+  /* Hotel button */
+  .menu-button:nth-child(9):hover {
+    background-color: grey;
   }
 
 

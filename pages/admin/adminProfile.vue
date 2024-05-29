@@ -1,9 +1,13 @@
 <template>
   <div class="header">
     <span class="heading">Admin Profile</span>
-    <button @click="openRegisterDialog" class="add-admin-btn">Add Admin Profile</button>  
+    <button @click="openRegisterDialog" class="add-admin-btn">+ Add Admin Profile</button> 
   </div>
-  <RegisterAdminDialog ref="registerDialogRef" @updated="refreshData"/>
+  <RegisterAdminDialog 
+    ref="registerDialogRef" 
+    @updated="refresh()"
+  />
+  
   <table>
     <thead>
       <tr>
@@ -26,36 +30,50 @@
           <div :class="admin.status == 'ACTIVE' ? 'active-status': 'inactive-status'">
             {{ admin.status }}
           </div>
-          
         </td>
         <td>{{ formatDate(admin.last_login) }}</td>
         <td>
           <div>
-            <button @click="editPage(page.article_id)"><span class="material-symbols-outlined" style="color: #EECA40" title="Edit page">edit</span></button>
-            <button @click="showDeleteDialog(page)"><span class="material-symbols-outlined" style="color: red" title="Delete page">delete</span></button>
+            <button @click="editPage(admin.id)"><span class="material-symbols-outlined" style="color: #EECA40" title="Edit page">edit</span></button>
+            <button @click="openDeleteDialog(admin.id)"><span class="material-symbols-outlined" style="color: red" title="Delete page">delete</span></button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
+  <DeleteDialog ref="deleteDialogRef" @delete="deleteAdmin"/>
 </template>
 
 <script setup>
   definePageMeta({
-      layout: 'admin',
+      layout: 'admin-layout',
   })
-
   const registerDialogRef = ref(null);
+  const deleteDialogRef = ref(null);
+  const adminIdToDelete = ref(null);
 
-  const openRegisterDialog = () => {
+  const openRegisterDialog = (adminID) => {
+    adminIdToDelete.value = adminID;
     registerDialogRef.value.openDialog();
   };
 
+  const openDeleteDialog = (adminID) => {
+    adminIdToDelete.value = adminID;
+    deleteDialogRef.value.openDialog();
+  };
 
   const { data: admins, refresh } = await useFetch('/api/admin/fetchAdmins');
 
-  const refreshData = async () => {
-    await refresh();
+  const deleteAdmin = async () => {
+    const res = await useFetch(`/api/admin/${adminIdToDelete.value}`, {
+      method: "DELETE",
+    })
+    if (!res.data) {
+      throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
+    } else {
+      await refresh();
+      useToastListStore().addToast('Admin account successfully deleted.', 'success')
+    }
   }
 </script>
 
@@ -73,6 +91,7 @@
   }
   
   .add-admin-btn {
+    height: 40px;
     padding: 0.5rem 1rem;
     border-radius: 5px;
     background-color: #4277F3;
@@ -104,14 +123,10 @@
     text-align: left;
   }
 
-  table td span {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    color: red;
-    font-size: 26px;
-    font-weight: bold;
-    cursor: pointer;
+  td:nth-last-child(1) div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
   }
 
   .active-status {

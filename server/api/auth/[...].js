@@ -2,6 +2,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { NuxtAuthHandler } from '#auth'
 import bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
+import { useToastListStore } from '~/stores/ToastListStore';
 
 const prisma = new PrismaClient();
 
@@ -16,36 +17,34 @@ export default NuxtAuthHandler({
       name: 'credentials',
       credentials: {},
       async authorize(credentials) {
-        const user = await prisma.users.findUnique({
-          where: {
-            username: credentials.username
+        try {
+          const user = await prisma.users.findUnique({
+            where: {
+              username: credentials.username
+            }
+          });
+
+          if(!user) {
+            throw 'Invalid credentials';
           }
-        });
+  
+          const isCorrectPassword = await bcrypt.compare(credentials.password, user.password)
+          if (!isCorrectPassword) {
+            throw 'Invalid credentials';
+          }
 
-        if(!user) {
-          throw createError({
-            statusCode: 401,
-            statusMessage: "Unauthorized",
-          })
+          return {...user, password: undefined};
+          
+        } catch (err) {
+          return console.log(err);
         }
-
-        const isValid = await bcrypt.compare(credentials.password, user.password)
-
-        if (!isValid) {
-          throw createError({
-            statusCode: 401,
-            statusMessage: "Unauthorized",
-          })
-        }
-      
-        return {...user, password: undefined};
       }
     })
   ],
 
   session: {
     strategy: "jwt",
-    maxAge: 3600, // 1 hour session only, after will need to reauthenicate
+    maxAge: 1800, // 30 mins session only, after will need to reauthenicate
   },
 
  callbacks: {

@@ -33,8 +33,6 @@
     const toggleCollapse = () => {
         emit('toggle', props.id)
     };
-
-
 </script>
 
 <style>
@@ -53,7 +51,6 @@
         font-size: 16px;
         font-weight: bold;
         text-align: left;
-        
     }
 
     .button-collapse .icon {
